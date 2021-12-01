@@ -6,23 +6,19 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.locadora.domain.Classe;
-import server.locadora.repository.ClasseRepository;
+import server.locadora.service.ClasseService;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 @RestController
 @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 public class ClasseController {
-    //private ClasseService classeService = new ClasseService();
     @Autowired
-    private ClasseRepository classeRepository;
+    private ClasseService classeService;
 
     @GetMapping(value = "/classes")
     public List<Classe> getClasses() {
-        //return classeService.getClassees();
-        return classeRepository.findAll();
+        return classeService.getClasses();
     }
 
     @PostMapping("/classe/{aux_nome}/{aux_valor}/{aux_prazoDevolucao}")
@@ -31,17 +27,9 @@ public class ClasseController {
             @PathVariable(value = "aux_valor") double valor,
             @PathVariable(value = "aux_prazoDevolucao") String prazoDevolucao
     ) {
-        //Create save Object
-        Classe classe = new Classe();
-        classe.setNome(name);
-        classe.setValor(valor);
-
         //Treat error to Save
         try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-            classe.setPrazoDevolucao(dateFormat.parse(prazoDevolucao));
-
-            this.classeRepository.save(classe);
+            classeService.save(name, valor, prazoDevolucao);
 
             //Susses return
             return new ResponseEntity(HttpStatus.OK);
@@ -60,14 +48,7 @@ public class ClasseController {
     ) {
         //Treat error to Save
         try {
-            Classe classe = this.classeRepository.findById(id).orElse(null);
-
-            classe.setNome(name);
-            classe.setValor(valor);
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-            classe.setPrazoDevolucao(dateFormat.parse(prazoDevolucao));
-
-            this.classeRepository.save(classe);
+            classeService.update(id, name, valor, prazoDevolucao);
 
             //Susses return
             return new ResponseEntity(HttpStatus.OK);
@@ -83,7 +64,7 @@ public class ClasseController {
     ) {
         //Treat error to Save
         try {
-            this.classeRepository.deleteById(id);
+            classeService.delete(id);
 
             //Susses return
             return new ResponseEntity(HttpStatus.OK);

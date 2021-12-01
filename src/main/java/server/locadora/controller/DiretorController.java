@@ -6,7 +6,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.locadora.domain.Diretor;
-import server.locadora.repository.DiretorRepository;
+import server.locadora.service.DiretorService;
 
 import java.util.List;
 
@@ -15,25 +15,20 @@ import java.util.List;
 public class DiretorController {
     //private DiretorService diretorService = new DiretorService();
     @Autowired
-    private DiretorRepository diretorRepository;
+    private DiretorService diretorService;
 
     @GetMapping(value = "/diretores")
     public List<Diretor> getDiretores() {
-        //return diretorService.getDiretores();
-        return diretorRepository.findAll();
+        return diretorService.getDiretores();
     }
 
     @PostMapping("/diretor/{aux_nome}")
     public ResponseEntity addDiretor(
             @PathVariable(value = "aux_nome") String name
     ) {
-        //Create save Object
-        Diretor diretor = new Diretor();
-        diretor.setNome(name);
-
         //Treat error to Save
         try {
-            this.diretorRepository.save(diretor);
+            diretorService.save(name);
 
             //Susses return
             return new ResponseEntity(HttpStatus.OK);
@@ -50,11 +45,7 @@ public class DiretorController {
     ) {
         //Treat error to Save
         try {
-            Diretor diretor = this.diretorRepository.findById(id).orElse(null);
-
-            diretor.setNome(name);
-
-            this.diretorRepository.save(diretor);
+            diretorService.update(id, name);
 
             //Susses return
             return new ResponseEntity(HttpStatus.OK);
@@ -70,7 +61,7 @@ public class DiretorController {
     ) {
         //Treat error to Save
         try {
-            this.diretorRepository.deleteById(id);
+            diretorService.delete(id);
 
             //Susses return
             return new ResponseEntity(HttpStatus.OK);

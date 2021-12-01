@@ -15,4 +15,24 @@ public class AtorService {
     public List<Ator> getAtores() {
         return atorRepository.findAll();
     }
+
+    public void save(String name) throws IllegalArgumentException {
+        //Create save Object
+        Ator ator = new Ator();
+        ator.setNome(name);
+
+        this.atorRepository.save(ator);
+    }
+
+    public void update(Long id, String name) throws IllegalArgumentException {
+        Ator ator = this.atorRepository.findById(id).orElse(null);
+
+        ator.setNome(name);
+
+        this.atorRepository.save(ator);
+    }
+
+    public void delete(Long id) throws IllegalArgumentException{
+        this.atorRepository.deleteById(id);
+    }
 }

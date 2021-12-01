@@ -10,6 +10,7 @@ import server.locadora.domain.Classe;
 import server.locadora.domain.Diretor;
 import server.locadora.domain.Titulo;
 import server.locadora.repository.TituloRepository;
+import server.locadora.service.TituloService;
 
 import java.util.List;
 
@@ -17,12 +18,11 @@ import java.util.List;
 @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 public class TituloController {
     @Autowired
-    private TituloRepository tituloRepository;
+    private TituloService tituloService;
 
     @GetMapping(value = "/titulos")
-    public List<Titulo> getTituloes() {
-        //return tituloService.getTituloes();
-        return tituloRepository.findAll();
+    public List<Titulo> getTitulos() {
+        return tituloService.getTitulos();
     }
 
     @PostMapping("/titulo/{aux_nome}/{aux_ano}/{aux_sinopse}/{aux_categoria}/{aux_atores}/{aux_diretor}/{aux_classe}")
@@ -35,19 +35,9 @@ public class TituloController {
             @PathVariable(value = "aux_diretor") Diretor diretor,
             @PathVariable(value = "aux_classe") Classe classe
     ) {
-        //Create save Object
-        Titulo titulo = new Titulo();
-        titulo.setNome(name);
-        titulo.setAno(ano);
-        titulo.setSinopse(sinopse);
-        titulo.setCategoria(categoria);
-        titulo.setAtores(atores);
-        titulo.setDiretor(diretor);
-        titulo.setClasse(classe);
-
         //Treat error to Save
         try {
-            this.tituloRepository.save(titulo);
+            tituloService.save(name, ano, sinopse, categoria, atores, diretor, classe);
 
             //Susses return
             return new ResponseEntity(HttpStatus.OK);
@@ -70,17 +60,7 @@ public class TituloController {
     ) {
         //Treat error to Save
         try {
-            Titulo titulo = this.tituloRepository.findById(id).orElse(null);
-
-            titulo.setNome(name);
-            titulo.setAno(ano);
-            titulo.setSinopse(sinopse);
-            titulo.setCategoria(categoria);
-            titulo.setAtores(atores);
-            titulo.setDiretor(diretor);
-            titulo.setClasse(classe);
-
-            this.tituloRepository.save(titulo);
+            tituloService.update(id, name, ano, sinopse, categoria, atores, diretor, classe);
 
             //Susses return
             return new ResponseEntity(HttpStatus.OK);
@@ -96,7 +76,7 @@ public class TituloController {
     ) {
         //Treat error to Save
         try {
-            this.tituloRepository.deleteById(id);
+            tituloService.delete(id);
 
             //Susses return
             return new ResponseEntity(HttpStatus.OK);

@@ -6,7 +6,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.locadora.domain.Ator;
-import server.locadora.repository.AtorRepository;
 import server.locadora.service.AtorService;
 
 import java.util.List;
@@ -14,32 +13,24 @@ import java.util.List;
 @RestController
 @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 public class AtorController {
-    //private AtorService atorService = new AtorService();
     @Autowired
-    private AtorRepository atorRepository;
+    private AtorService atorService;
 
     @GetMapping(value = "/atores")
     public List<Ator> getAtores() {
-        //return atorService.getAtores();
-        return atorRepository.findAll();
+        return atorService.getAtores();
     }
 
     @PostMapping("/ator/{aux_nome}")
     public ResponseEntity addAtor(
             @PathVariable(value = "aux_nome") String name
     ) {
-        //Create save Object
-        Ator ator = new Ator();
-        ator.setNome(name);
-
         //Treat error to Save
         try {
-            this.atorRepository.save(ator);
+            atorService.save(name);
 
-            //Susses return
             return new ResponseEntity(HttpStatus.OK);
-        } catch (Exception e) {
-            //Error return
+        } catch (IllegalArgumentException e) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
     }
@@ -51,15 +42,11 @@ public class AtorController {
     ) {
         //Treat error to Save
         try {
-            Ator ator = this.atorRepository.findById(id).orElse(null);
-
-            ator.setNome(name);
-
-            this.atorRepository.save(ator);
+            atorService.update(id, name);
 
             //Susses return
             return new ResponseEntity(HttpStatus.OK);
-        } catch (Exception e) {
+        } catch (IllegalArgumentException e) {
             //Error return
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
@@ -71,11 +58,11 @@ public class AtorController {
     ) {
         //Treat error to Save
         try {
-            this.atorRepository.deleteById(id);
+            atorService.delete(id);
 
             //Susses return
             return new ResponseEntity(HttpStatus.OK);
-        } catch (Exception e) {
+        } catch (IllegalArgumentException e) {
             //Error return
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
