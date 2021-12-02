@@ -22,17 +22,14 @@ public class DependenteService {
         return dependenteRepository.findAll();
     }
 
-    public void save(Long socioId, String name, String endereco, String tel, String sexo, String cpf, String nascimento, Boolean ativo) throws IllegalArgumentException, ParseException {
+    public void save(Long socioId, String name, String sexo, String nascimento, Boolean ativo) throws IllegalArgumentException, ParseException {
         //Create save Object
         Socio socio = this.socioRepository.findById(socioId).orElse(null);
         if(socio.getDependentes().size() >= 3) throw new java.lang.RuntimeException("s>3");
 
         Dependente dependente = new Dependente();
         dependente.setNome(name);
-        dependente.setEndereco(endereco);
-        dependente.setTelefone(tel);
         dependente.setSexo(sexo);
-        dependente.setCpf(cpf);
         dependente.setEstahAtivo(ativo);
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
@@ -46,14 +43,11 @@ public class DependenteService {
         this.socioRepository.save(socio);
     }
 
-    public void update(Long id, String name, String endereco, String tel, String sexo, String cpf, String nascimento, Boolean ativo) throws IllegalArgumentException, ParseException {
+    public void update(Long id, String name, String sexo, String nascimento, Boolean ativo) throws IllegalArgumentException, ParseException {
         Dependente dependente = this.dependenteRepository.findById(id).orElse(null);
 
         dependente.setNome(name);
-        dependente.setEndereco(endereco);
-        dependente.setTelefone(tel);
         dependente.setSexo(sexo);
-        dependente.setCpf(cpf);
         dependente.setEstahAtivo(ativo);
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
@@ -62,14 +56,14 @@ public class DependenteService {
         this.dependenteRepository.save(dependente);
     }
 
-    public void delete(Long socioId, Long id) throws IllegalArgumentException {
+    public void delete(Long socioId, Long dependenteId) throws IllegalArgumentException {
         Socio socio = this.socioRepository.findById(socioId).orElse(null);
 
         List<Dependente> dependentes = socio.getDependentes();
-        dependentes.remove(socio);
+        dependentes.remove(this.dependenteRepository.getById(dependenteId));
         socio.setDependentes(dependentes);
 
-        this.dependenteRepository.deleteById(id);
+        this.dependenteRepository.deleteById(dependenteId);
         this.socioRepository.save(socio);
     }
 }

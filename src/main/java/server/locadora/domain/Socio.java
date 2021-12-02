@@ -1,27 +1,41 @@
 package server.locadora.domain;
 
 import javax.persistence.*;
-import java.util.Date;
 import java.util.List;
 
 @Entity
 public class Socio extends Cliente {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+    private String cpf;
+    private String endereco;
+    private String telefone;
     @OneToMany
     private List<Dependente> dependentes;
 
     public Socio() {
     }
 
-    public Long getId() {
-        return id;
+    public String getCpf() {
+        return cpf;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public String getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
     }
 
     public List<Dependente> getDependentes() {

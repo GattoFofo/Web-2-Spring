@@ -1,16 +1,28 @@
 package server.locadora.domain;
 
+import javax.persistence.*;
 import java.util.Date;
 
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Cliente {
+    @Id
+    @Column(name = "id", nullable = false)
+    private Long id;
+
     private Long nunInscricao;
     private String nome;
     private Date dtNascimento;
     private String sexo;
-    private String cpf;
-    private String endereco;
-    private String telefone;
     private Boolean estahAtivo;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public Long getNunInscricao() {
         return nunInscricao;
@@ -52,27 +64,4 @@ public abstract class Cliente {
         this.estahAtivo = estahAtivo;
     }
 
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
-    public String getEndereco() {
-        return endereco;
-    }
-
-    public void setEndereco(String endereco) {
-        this.endereco = endereco;
-    }
-
-    public String getTelefone() {
-        return telefone;
-    }
-
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
 }

@@ -21,20 +21,17 @@ public class DependenteController {
         return dependenteService.getDependentes();
     }
 
-    @PostMapping("/dependente/{aux_SocioId}/{aux_nome}/{aux_endereco}/{aux_tel}/{aux_sexo}/{aux_cpf}/{aux_dtNascimento}/{aux_ativo}")
+    @PostMapping("/dependente/{aux_SocioId}/{aux_nome}/{aux_sexo}/{aux_dtNascimento}/{aux_ativo}")
     public ResponseEntity addDependente(
             @PathVariable(value = "aux_SocioId") Long socioId,
             @PathVariable(value = "aux_nome") String name,
-            @PathVariable(value = "aux_endereco") String endereco,
-            @PathVariable(value = "aux_telefone") String telefone,
             @PathVariable(value = "aux_sexo") String sexo,
-            @PathVariable(value = "aux_cpf") String cpf,
             @PathVariable(value = "aux_dtNascimento") String dtNascimento,
             @PathVariable(value = "aux_ativo") Boolean ativo
     ) {
         //Treat error to Save
         try {
-            dependenteService.save(socioId, name, endereco, telefone, sexo, cpf, dtNascimento, ativo);
+            dependenteService.save(socioId, name, sexo, dtNascimento, ativo);
 
             //Susses return
             return new ResponseEntity(HttpStatus.OK);
@@ -44,20 +41,17 @@ public class DependenteController {
         }
     }
 
-    @PutMapping(value = "/dependente/{aux_id}/{aux_nome}/{aux_endereco}/{aux_tel}/{aux_sexo}/{aux_cpf}/{aux_dtNascimento}/{aux_ativo}")
+    @PutMapping(value = "/dependente/{aux_id}/{aux_nome}/{aux_sexo}/{aux_dtNascimento}/{aux_ativo}")
     public ResponseEntity attDependente(
             @PathVariable(value = "aux_id") Long id,
             @PathVariable(value = "aux_nome") String name,
-            @PathVariable(value = "aux_endereco") String endereco,
-            @PathVariable(value = "aux_telefone") String telefone,
             @PathVariable(value = "aux_sexo") String sexo,
-            @PathVariable(value = "aux_cpf") String cpf,
             @PathVariable(value = "aux_dtNascimento") String dtNascimento,
             @PathVariable(value = "aux_ativo") Boolean ativo
     ) {
         //Treat error to Save
         try {
-            dependenteService.update(id, name, endereco, telefone, sexo, cpf, dtNascimento, ativo);
+            dependenteService.update(id, name, sexo, dtNascimento, ativo);
 
             //Susses return
             return new ResponseEntity(HttpStatus.OK);
