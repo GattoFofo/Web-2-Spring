@@ -3,11 +3,11 @@ package server.locadora.domain;
 import javax.persistence.*;
 import java.util.Date;
 
-@Entity
-@Inheritance(strategy = InheritanceType.JOINED)
+@MappedSuperclass
 public abstract class Cliente {
     @Id
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Long nunInscricao;

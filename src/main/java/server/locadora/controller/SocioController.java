@@ -21,7 +21,7 @@ public class SocioController {
         return socioService.getSocios();
     }
 
-    @PostMapping("/socio/{aux_nome}/{aux_endereco}/{aux_tel}/{aux_sexo}/{aux_cpf}/{aux_dtNascimento}/{aux_ativo}")
+    @PostMapping("/socio/{aux_nome}/{aux_endereco}/{aux_telefone}/{aux_sexo}/{aux_cpf}/{aux_dtNascimento}/{aux_ativo}")
     public ResponseEntity addSocio(
             @PathVariable(value = "aux_nome") String name,
             @PathVariable(value = "aux_endereco") String endereco,
@@ -39,11 +39,12 @@ public class SocioController {
             return new ResponseEntity(HttpStatus.OK);
         } catch (Exception e) {
             //Error return
+            System.out.println(e);
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
     }
 
-    @PutMapping(value = "/socio/{aux_id}/{aux_nome}/{aux_endereco}/{aux_tel}/{aux_sexo}/{aux_cpf}/{aux_dtNascimento}/{aux_ativo}")
+    @PutMapping(value = "/socio/{aux_id}/{aux_nome}/{aux_endereco}/{aux_telefone}/{aux_sexo}/{aux_cpf}/{aux_dtNascimento}/{aux_ativo}")
     public ResponseEntity attSocio(
             @PathVariable(value = "aux_id") Long id,
             @PathVariable(value = "aux_nome") String name,
