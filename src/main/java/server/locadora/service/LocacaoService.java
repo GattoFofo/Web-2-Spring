@@ -33,8 +33,8 @@ public class LocacaoService {
         Dependente dependente = this.dependenteRepository.findById(clientId).orElse(null);
         Titulo titulo = this.tituloRepository.findById(tituloId).orElse(null);
 
-        if ((socio == null) || (dependente == null) || (titulo == null))
-            throw new java.lang.RuntimeException("null value");
+        if ((socio == null) && (dependente == null) || (titulo == null))
+            throw new java.lang.RuntimeException("socio: " + socio + "\ndependente: " + dependente + "\ntitulo: " + titulo + "\nnull value error");
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
 

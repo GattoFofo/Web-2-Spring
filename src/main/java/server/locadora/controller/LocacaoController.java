@@ -39,6 +39,7 @@ public class LocacaoController {
             return new ResponseEntity(HttpStatus.OK);
         } catch (Exception e) {
             //Error return
+            System.out.println(e);
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
     }
